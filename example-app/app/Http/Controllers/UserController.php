@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -21,9 +24,12 @@ class UserController extends Controller
     }
 
     // get user
-    public function show(User $user)
+    public function show()
     {
         // return view('users.show', ['user' => $user]);
+        return [
+            'user' => auth()->user()
+        ];
     }
 
     // update user
