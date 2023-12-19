@@ -24,5 +24,9 @@ Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
 Route::post('bookReviews', [BookReviewController::class, 'createReview']);
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [UserController::class, 'create']);
+Route::put('/user/update', [UserController::class, 'update']);
+
+//auth:sanctum yeu cau Authorization header khi gui request
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/home', [UserController::class, 'show']);

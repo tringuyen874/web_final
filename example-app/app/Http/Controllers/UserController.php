@@ -19,6 +19,12 @@ class UserController extends Controller
             'password' => 'required',
             
         ]);
+        $emailExists = User::where('email', $request->email)->exists();
+        if($emailExists) {
+            return [
+                'message' => 'Email already exists'
+            ];
+        }
         $newUser = User::create($data);
         // return view('users.create');
     }
@@ -33,15 +39,22 @@ class UserController extends Controller
     }
 
     // update user
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
+        // $user = auth()->user();
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'new_password' => 'required',
             
         ]);
-        $user->update($data);
+        $user = User::where('email', request('email'))->first();
+        if(Hash::check(request('password'), $user->getAuthPassword())) {
+            $user->password = Hash::make(request('new_password'));
+            $user->save();
+        }
+        // $user->update($data);
         // return redirect(route('user.index'))->with('success', 'User updated successfully');
     }
 

@@ -28,6 +28,11 @@ class AuthController extends Controller
                 // 'token_type' => 'Bearer'
             ];
         }
+        else {
+            return [
+                'message' => 'The provided credentials do not match our records.'
+            ];
+        }
     }
 
     public function logout() {
