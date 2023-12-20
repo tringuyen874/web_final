@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->get('/home', [UserController::class, 'show'])
 
 Route::get('/reply', [ReplyController::class, 'getAllReplies']);
 Route::post('/reply', [ReplyController::class, 'createReply']);
-Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
+Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
 Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
 Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
 
