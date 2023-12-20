@@ -27,7 +27,23 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'create']);
 Route::put('/user/updatePassword', [UserController::class, 'updatePassword']);
 
-//auth:sanctum yeu cau Authorization header khi gui request
+//auth:api yeu cau Authorization header khi gui request
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
-Route::middleware('auth:api')->get('/user', [UserController::class, 'show']);
+
+
+
+
+
+
+
+Route::get('/reply', [ReplyController::class, 'getAllReplies']);
+Route::post('/reply', [ReplyController::class, 'createReply']);
+Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
+Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
+Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
+
+// Route::middleware('auth:sanctum')->get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
+// Route::middleware('auth:sanctum')->put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
+// Route::middleware('auth:sanctum')->delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
+
