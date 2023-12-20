@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -16,23 +17,34 @@ class AuthController extends Controller
             'password' => ['required']
         ])->validate();
 
-        $user = User::where('email', request('email'))->first();
-        if(Hash::check(request('password'), $user->getAuthPassword())) {
-            $token = $user->createToken('auth_token')->plainTextToken;
-            // return response()->json([
-            //     'access_token' => $token,
-            //     // 'token_type' => 'Bearer'
-            // ]);
-            return [
-                'access_token' => $token,
-                // 'token_type' => 'Bearer'
-            ];
+        $credentials = request(['email', 'password']);
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        else {
-            return [
-                'message' => 'The provided credentials do not match our records.'
-            ];
-        }
+        return [
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ];
+
+        // $user = User::where('email', request('email'))->first();
+
+        // if(Hash::check(request('password'), $user->getAuthPassword())) {
+        //     $token = $user->createToken('auth_token')->plainTextToken;
+        //     // return response()->json([
+        //     //     'access_token' => $token,
+        //     //     // 'token_type' => 'Bearer'
+        //     // ]);
+        //     return [
+        //         'access_token' => $token,
+        //         // 'token_type' => 'Bearer'
+        //     ];
+        // }
+        // else {
+        //     return [
+        //         'message' => 'The provided credentials do not match our records.'
+        //     ];
+        // }
     }
 
     public function logout() {

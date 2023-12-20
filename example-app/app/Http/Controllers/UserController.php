@@ -15,6 +15,8 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required',
             'password' => 'required',
             
@@ -39,7 +41,7 @@ class UserController extends Controller
     }
 
     // update user
-    public function update(Request $request)
+    public function updatePassword(Request $request)
     {
         // $user = auth()->user();
         $data = $request->validate([
@@ -57,6 +59,7 @@ class UserController extends Controller
         // $user->update($data);
         // return redirect(route('user.index'))->with('success', 'User updated successfully');
     }
+    
 
     // delete user
     public function destroy(User $user)
