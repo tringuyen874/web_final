@@ -13,13 +13,16 @@ class BookReview extends Model
 {
     use HasFactory;
 
-    protected $table = 'book_reviews';
+    protected $table = 'posts';
     
     protected $fillable = [
         'title',
+        'image',
         'date',
         'review',
         'approved',
+        'prevPost',
+        'nextPost',
         'category_id',
         'user_id',
     ];
