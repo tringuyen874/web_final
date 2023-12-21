@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookReviewController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 
@@ -17,11 +17,11 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
-Route::post('bookReviews', [BookReviewController::class, 'createReview']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+// Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
+// Route::post('bookReviews', [BookReviewController::class, 'createReview']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'create']);
@@ -43,9 +43,14 @@ Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
 
 Route::get('/reply', [ReplyController::class, 'getAllReplies']);
 Route::post('/reply', [ReplyController::class, 'createReply']);
-Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
+
+Route::post('/reply/user', [ReplyController::class, 'createReplyFromUser']);
+Route::put('/reply/user/{id}', [ReplyController::class, 'updateReplyFromUser']);
+Route::get('/replies/book_review/{id}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
 Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
 Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
+
+Route::get('/posts', [PostController::class, 'getAllReviews']);
 
 // Route::middleware('auth:sanctum')->get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
 // Route::middleware('auth:sanctum')->put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
