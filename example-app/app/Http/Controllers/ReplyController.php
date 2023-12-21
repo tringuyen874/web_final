@@ -101,6 +101,81 @@ class ReplyController extends Controller
         ], 200);
     }
 
+    public function createReplyFromUser(Request $request)
+    {
+        $data = $request->validate([
+            'content' => 'required',
+            'book_review_id' => 'required|numeric',
+            // 'user_id' => 'required|numeric',
+        ]);
+        // lay user_id tu token
+        $data['user_id'] = auth()->user()->id;
+        // Kiểm tra xem user_id và book_review_id có tồn tại không
+        // $user = User::find($data['user_id']);
+        // kiểm tra xem book_review_id có tồn tại không
+        $bookReview = BookReview::find($data['book_review_id']);
+
+        // if ($user === null || $bookReview === null) {
+        if ($bookReview === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Book Review not found',
+            ], 404);
+        }
+
+        $existingReply = Reply::where('user_id', $data['user_id'])->where('book_review_id', $data['book_review_id'])->first();
+        if ($existingReply) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already replied to this book review',
+            ], 400);
+        }
+
+        // Nếu book review đều tồn tại, tạo một reply mới
+        $newReply = Reply::create($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reply created successfully',
+            'reply' => $newReply,
+        ], 200);
+    }
+
+    public function updateReplyFromUser(Request $request, $id)
+    {
+        $data = $request->validate([
+            'content' => 'required',
+        ]);
+
+        // Find the reply
+        $reply = Reply::find($id);
+
+        if ($reply === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Reply not found',
+            ], 404);
+        }
+
+        // Check if the current user is the one who created the reply
+        if ($reply->user_id !== auth()->id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not authorized to update this reply',
+            ], 403);
+        }
+
+        // Update the reply
+        $reply->content = $data['content'];
+        $reply->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reply updated successfully',
+            'reply' => $reply,
+        ], 200);
+    }
+
     public function createReply(Request $request)
     {
         $data = $request->validate([
@@ -149,6 +224,14 @@ class ReplyController extends Controller
             ], 404);
         }
 
+        $existingReply = Reply::where('user_id', $data['user_id'])->where('book_review_id', $data['book_review_id'])->first();
+        if ($existingReply) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already replied to this book review',
+            ], 400);
+        }
+
         // Nếu cả user và book review đều tồn tại, cập nhật reply
         $reply = Reply::find($id);
         if ($reply) {
@@ -169,6 +252,10 @@ class ReplyController extends Controller
     public function deleteReply(Reply $reply)
     {
         $reply->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Reply deleted successfully',
+        ], 200);
         // return redirect(route('reply.index'))->with('success', 'Reply deleted successfully');
     }
 }
