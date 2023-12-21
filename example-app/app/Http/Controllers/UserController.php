@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 
 
 class UserController extends Controller
@@ -19,6 +20,7 @@ class UserController extends Controller
             'last_name' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'role' => 'nullable'
             
         ]);
         $emailExists = User::where('email', $request->email)->exists();
@@ -27,7 +29,16 @@ class UserController extends Controller
                 'message' => 'Email already exists'
             ];
         }
+        $userExists = User::where('name', $request->name)->exists();
+        if($userExists) {
+            return [
+                'message' => 'User already exists'
+            ];
+        }
         $newUser = User::create($data);
+        return [
+            'message' => "User created successfully",
+        ];
         // return view('users.create');
     }
 
@@ -45,7 +56,7 @@ class UserController extends Controller
     {
         // $user = auth()->user();
         $data = $request->validate([
-            'name' => 'required',
+            // 'name' => 'required',
             'email' => 'required',
             'password' => 'required',
             'new_password' => 'required',
@@ -55,6 +66,14 @@ class UserController extends Controller
         if(Hash::check(request('password'), $user->getAuthPassword())) {
             $user->password = Hash::make(request('new_password'));
             $user->save();
+            return [
+                'message' => 'Password updated successfully'
+            ];
+        }
+        else {
+            return [
+                'message' => 'The provided credentials do not match our records.'
+            ];
         }
         // $user->update($data);
         // return redirect(route('user.index'))->with('success', 'User updated successfully');
@@ -64,7 +83,17 @@ class UserController extends Controller
     // delete user
     public function destroy(User $user)
     {
+        if (Gate::denies('delete-user', $user)) {
+            return response()->json(['message' => 'You are not authorized to delete this user'], 403);
+        }
         $user->delete();
+        return [
+            'message' => 'User deleted successfully'
+        ];
         // return redirect(route('user.index'))->with('success', 'User deleted successfully');
+    }
+
+    public function createAdmin() {
+        
     }
 }

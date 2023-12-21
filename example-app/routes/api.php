@@ -27,10 +27,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'create']);
 Route::put('/user/updatePassword', [UserController::class, 'updatePassword']);
 
+Route::middleware('auth:api')->delete('/admin/{user}', [UserController::class, 'destroy']);
+Route::middleware('auth:api')->put('/user/{user}/update', [UserController::class, 'update']);
+Route::middleware('auth:api')->post('/admin/{user}', [AuthController::class, 'createAdmin']);
+
+
 //auth:api yeu cau Authorization header khi gui request
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
-
 
 
 
