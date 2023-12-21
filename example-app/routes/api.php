@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ReplyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,15 +25,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'create']);
-Route::put('/user/update', [UserController::class, 'update']);
+Route::put('/user/updatePassword', [UserController::class, 'updatePassword']);
 
-//auth:sanctum yeu cau Authorization header khi gui request
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-Route::middleware('auth:sanctum')->get('/home', [UserController::class, 'show']);
+//auth:api yeu cau Authorization header khi gui request
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
+
+
+
+
+
+
 
 Route::get('/reply', [ReplyController::class, 'getAllReplies']);
 Route::post('/reply', [ReplyController::class, 'createReply']);
-Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
+Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
 Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
 Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
 
