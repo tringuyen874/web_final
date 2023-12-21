@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,9 @@ use App\Http\Controllers\CommentController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 // Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
 // Route::post('bookReviews', [BookReviewController::class, 'createReview']);
 
@@ -42,7 +43,7 @@ Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
 
 
 
-Route::get('/comment', [CommentController::class, 'getAllReplies']);
+Route::get('/comment', [CommentController::class, 'getAllComment']);
 Route::post('/comment', [CommentController::class, 'createComment']);
 
 Route::post('/comment/user', [CommentController::class, 'createcommentFromUser']);
@@ -51,7 +52,13 @@ Route::get('/comments/book_review/{id}', [CommentController::class, 'getAllComme
 Route::put('/comment/{comment}/update', [CommentController::class, 'updateComment']);
 Route::delete('/comment/{comment}/destroy', [CommentController::class, 'deleteComment']);
 
-Route::get('/posts', [PostController::class, 'getAllReviews']);
+Route::get('/posts', [PostController::class, 'getAllPosts']);
+Route::middleware('auth:api')->post('/post', [PostController::class, 'createPost']);
+Route::get('/post/{post}', [PostController::class, 'getPost']);
+Route::middleware('auth:api')->put('/post/{post}/update', [PostController::class, 'updatePost']);
+Route::middleware('auth:api')->delete('/post/{post}/destroy', [PostController::class, 'deletePost']);
+
+Route::post('/category', [CategoryController::class, 'createCategory']);
 
 // Route::middleware('auth:sanctum')->get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
 // Route::middleware('auth:sanctum')->put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
