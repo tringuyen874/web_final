@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
 
-class BookReviewController extends Controller
+class PostController extends Controller
 {
     //
     public function getAllReviews()
     {
         $posts = Post::all();
         // return view('bookReviews.index', ['bookReviews' => $bookReviews]);
-        if ($post->isEmpty()) {
+        if ($posts->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No book reviews found',
@@ -22,7 +22,7 @@ class BookReviewController extends Controller
         }
         return response()->json([
             'success' => true,
-            'data' => $post,
+            'data' => $posts,
         ], 200);
     }
 
@@ -34,7 +34,7 @@ class BookReviewController extends Controller
             'category_id' => 'required|numeric',
             'user_id' => 'required|numeric',
         ]);
-        $newBookReview = BookReview::create($data);
+        $newBookReview = Post::create($data);
         $category = $newBookReview->category;
         $user = $newBookReview->user;
 

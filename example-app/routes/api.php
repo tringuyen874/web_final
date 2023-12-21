@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,14 +42,14 @@ Route::middleware('auth:api')->get('/home', [UserController::class, 'show']);
 
 
 
-Route::get('/reply', [ReplyController::class, 'getAllReplies']);
-Route::post('/reply', [ReplyController::class, 'createReply']);
+Route::get('/comment', [CommentController::class, 'getAllReplies']);
+Route::post('/comment', [CommentController::class, 'createComment']);
 
-Route::post('/reply/user', [ReplyController::class, 'createReplyFromUser']);
-Route::put('/reply/user/{id}', [ReplyController::class, 'updateReplyFromUser']);
-Route::get('/replies/book_review/{id}', [ReplyController::class, 'getAllRepliesForBookReviewID']);
-Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
-Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
+Route::post('/comment/user', [CommentController::class, 'createcommentFromUser']);
+Route::put('/comment/user/{id}', [CommentController::class, 'updateCommentFromUser']);
+Route::get('/comments/book_review/{id}', [CommentController::class, 'getAllCommentsForBookReviewID']);
+Route::put('/comment/{comment}/update', [CommentController::class, 'updateComment']);
+Route::delete('/comment/{comment}/destroy', [CommentController::class, 'deleteComment']);
 
 Route::get('/posts', [PostController::class, 'getAllReviews']);
 

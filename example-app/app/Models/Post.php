@@ -9,7 +9,7 @@ use App\Models\Reply;
 use App\Models\Category;
 use function now;
 
-class BookReview extends Model
+class Post extends Model
 {
     use HasFactory;
 
@@ -38,8 +38,8 @@ class BookReview extends Model
     /**
      * Get the replies for the book review.
      */
-    public function replies() {
-        return $this->hasMany(Reply::class, 'book_review_id', 'id');
+    public function comments() {
+        return $this->hasMany(Comment::class, 'book_review_id', 'id');
     }
 
     /**
