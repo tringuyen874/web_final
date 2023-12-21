@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookReviewController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReplyController;
@@ -21,8 +21,8 @@ use App\Http\Controllers\ReplyController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
-Route::post('bookReviews', [BookReviewController::class, 'createReview']);
+// Route::get('bookReviews', [BookReviewController::class, 'getAllReviews']);
+// Route::post('bookReviews', [BookReviewController::class, 'createReview']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [UserController::class, 'create']);
@@ -37,6 +37,8 @@ Route::post('/reply', [ReplyController::class, 'createReply']);
 Route::get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
 Route::put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);
 Route::delete('/reply/{reply}/destroy', [ReplyController::class, 'deleteReply']);
+
+Route::get('/posts', [PostController::class, 'getAllReviews']);
 
 // Route::middleware('auth:sanctum')->get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
 // Route::middleware('auth:sanctum')->put('/reply/{reply}/update', [ReplyController::class, 'updateReply']);

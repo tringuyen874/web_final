@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\BookReview;
+use App\Models\Post;
 use App\Models\User;
 
 class BookReviewController extends Controller
@@ -12,9 +12,9 @@ class BookReviewController extends Controller
     //
     public function getAllReviews()
     {
-        $bookReviews = BookReview::all();
+        $posts = Post::all();
         // return view('bookReviews.index', ['bookReviews' => $bookReviews]);
-        if ($bookReviews->isEmpty()) {
+        if ($post->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No book reviews found',
@@ -22,7 +22,7 @@ class BookReviewController extends Controller
         }
         return response()->json([
             'success' => true,
-            'data' => $bookReviews,
+            'data' => $post,
         ], 200);
     }
 
