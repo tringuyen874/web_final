@@ -26,6 +26,7 @@ use App\Http\Controllers\CategoryController;
 // Route::post('bookReviews', [BookReviewController::class, 'createReview']);
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/loginAdmin', [AuthController::class, 'adminLogin']);
 Route::post('/register', [UserController::class, 'create']);
 Route::put('/user/updatePassword', [UserController::class, 'updatePassword']);
 

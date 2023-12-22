@@ -75,10 +75,37 @@ class AuthController extends Controller
     }
 
     public function logout() {
-        auth()->user()->currentAccessToken()->delete();
+        // auth()->user()->currentAccessToken()->delete();
         // return response()->json(['message' => 'Tokens Revoked']);
         return [
             'message' => 'Tokens Revoked'
         ];
+    }
+
+    public function adminLogin() {
+        validator(request()->only('email', 'password'), [
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ])->validate();
+        $user = User::where('email', request('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 404);
+        }
+        if (Hash::check(request('password'), $user->getAuthPassword()) && $user->role === 'admin'){
+            $credentials = request(['email', 'password']);
+
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return [
+                'access_token' => $token,
+                'token_type' => 'Bearer'
+            ];
+        }
+        else {
+            
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 404);
+            
+        }
     }
 }
