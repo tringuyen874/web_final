@@ -146,6 +146,12 @@ class PostController extends Controller
 
     public function approvePost(Post $post)
     {
+        if($post === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Post not found',
+            ], 404);
+        }
         $user = auth()->user();
         if ($user->role !== 'admin') {
             return response()->json([
@@ -163,6 +169,12 @@ class PostController extends Controller
 
     public function getPostsFromUser() {
         $user = auth()->user();
+        if($user === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        }
         $posts = Post::where('user_id', $user->id)->get();
         if ($posts->isEmpty()) {
             return response()->json([
@@ -189,4 +201,6 @@ class PostController extends Controller
             'data' => $posts,
         ], 200);
     }
+
+
 }

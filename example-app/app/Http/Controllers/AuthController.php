@@ -74,11 +74,11 @@ class AuthController extends Controller
         ];
     }
 
-    public function logout() {
-        auth()->user()->currentAccessToken()->delete();
-        // return response()->json(['message' => 'Tokens Revoked']);
-        return [
-            'message' => 'Tokens Revoked'
-        ];
-    }
+    // public function logout() {
+    //     auth()->user()->currentAccessToken()->delete();
+    //     // return response()->json(['message' => 'Tokens Revoked']);
+    //     return [
+    //         'message' => 'Tokens Revoked'
+    //     ];
+    // }
 }

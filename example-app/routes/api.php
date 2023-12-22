@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,6 +58,8 @@ Route::middleware('auth:api')->post('/post', [PostController::class, 'createPost
 Route::get('/post/{post}', [PostController::class, 'getPost']);
 Route::middleware('auth:api')->put('/post/{post}/update', [PostController::class, 'updatePost']);
 Route::middleware('auth:api')->delete('/post/{post}/destroy', [PostController::class, 'deletePost']);
+Route::middleware('auth:api')->post('/post/{post}/approve', [PostController::class, 'approvePost']);
+Route::middleware('auth:api')->get('/post', [PostController::class, 'getPostsFromUser']);
 
 Route::post('/category', [CategoryController::class, 'createCategory']);
 
