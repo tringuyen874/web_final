@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Welcome Email</title>
-</head>
-<body>
-    <h2>Welcome to our website, {{ $user->name }}</h2>
-    <p>
-        Thank you for joining our website. We are happy to have you with us.
-    </p>
-</body>
-</html>
+
+
+@component('mail::message')
+# OTP to update password
+Your OTP to update password is {{ $otp }}
+Thanks,<br>
+Bookaholic
+@endcomponent

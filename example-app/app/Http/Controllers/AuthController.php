@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -81,4 +84,22 @@ class AuthController extends Controller
     //         'message' => 'Tokens Revoked'
     //     ];
     // }
+
+    public function sendMail(Request $request) {
+        $otp = rand(100000, 999999);
+        $email = $request->email;
+        // $user = User::where('email', $email)->first();
+        // $user->otp = $otp;
+        // $user->save();
+        // $details = [
+        //     'title' => 'OTP to update password',
+        //     'otp' => $otp,
+        //     'userEmails' => $email
+        // ];
+        Mail::send(new \App\Mail\SendMail($otp, $email));
+        return [
+            'message' => 'OTP sent to your email',
+            'otp' => $otp
+        ];
+    }
 }

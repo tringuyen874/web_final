@@ -62,6 +62,8 @@ Route::middleware('auth:api')->delete('/post/{post}/destroy', [PostController::c
 Route::middleware('auth:api')->post('/post/{post}/approve', [PostController::class, 'approvePost']);
 Route::middleware('auth:api')->get('/post', [PostController::class, 'getPostsFromUser']);
 
+Route::post('/sendEmail', [AuthController::class, 'sendMail']);
+
 Route::post('/category', [CategoryController::class, 'createCategory']);
 
 // Route::middleware('auth:sanctum')->get('/reply/{reply}', [ReplyController::class, 'getAllRepliesForReview']);
