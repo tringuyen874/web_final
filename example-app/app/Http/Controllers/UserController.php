@@ -63,6 +63,9 @@ class UserController extends Controller
             
         ]);
         $user = User::where('email', request('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 404);
+        }
         if(Hash::check(request('password'), $user->getAuthPassword())) {
             $user->password = Hash::make(request('new_password'));
             $user->save();
@@ -95,5 +98,36 @@ class UserController extends Controller
 
     public function createAdmin() {
         
+    }
+
+    public function updateUser(Request $request) {
+        // if (Gate::denies('update-user', $user)) {
+        //     return response()->json(['message' => 'You are not authorized to update this user'], 403);
+        // }
+        $data = $request->validate([
+            'name' => 'nullable',
+            'first_name' => 'nullable',
+            'last_name' => 'nullable',
+            'email' => 'nullable',
+            'role' => 'nullable'
+        ]);
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        if ($user instanceof User) {
+            $user->update($data);
+        } else {
+            // Handle the case when $user is not an instance of User.
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        if ($user->name !== $request->name) {
+            return [
+                'message' => 'User updated not successfully'
+            ];
+        }
+        return [
+            'message' => 'User updated successfully'
+        ];
     }
 }

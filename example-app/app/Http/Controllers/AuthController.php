@@ -102,4 +102,34 @@ class AuthController extends Controller
             'otp' => $otp
         ];
     }
+
+    public function adminLogin() {
+        validator(request()->only('email', 'password'), [
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ])->validate();
+        $user = User::where('email', request('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 404);
+        }
+        if (Hash::check(request('password'), $user->getAuthPassword()) ){
+            $credentials = request(['email', 'password']);
+
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            if ($user->role !== 'admin') {
+                return response()->json(['message' => 'You are not authorized to login as admin'], 403);
+            }
+            return [
+                'access_token' => $token,
+                'token_type' => 'Bearer'
+            ];
+        }
+        else {
+            
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 404);
+            
+        }
+    }
 }

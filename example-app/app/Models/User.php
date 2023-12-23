@@ -25,6 +25,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'first_name',
+        'last_name',
     ];
 
     /**
@@ -61,13 +63,13 @@ class User extends Authenticatable implements JWTSubject
      * Get the replies for the user.
      */
     public function replies() {
-        return $this->hasMany(Reply::class, 'user_id', 'id');
+        return $this->hasMany(Comment::class, 'user_id', 'id');
     }
 
     /**
      * Get the book reviews for the user.
      */
     public function bookReviews() {
-        return $this->hasMany(BookReview::class, 'user_id', 'id');
+        return $this->hasMany(Post::class, 'user_id', 'id');
     }
 }

@@ -32,7 +32,7 @@ Route::post('/register', [UserController::class, 'create']);
 Route::put('/user/updatePassword', [UserController::class, 'updatePassword']);
 
 Route::middleware('auth:api')->delete('/admin/{user}', [UserController::class, 'destroy']);
-Route::middleware('auth:api')->put('/user/{user}/update', [UserController::class, 'update']);
+Route::middleware('auth:api')->put('/user/update', [UserController::class, 'updateUser']);
 Route::middleware('auth:api')->post('/admin/{user}', [AuthController::class, 'createAdmin']);
 
 
@@ -50,7 +50,7 @@ Route::post('/comment', [CommentController::class, 'createComment']);
 
 Route::post('/comment/user', [CommentController::class, 'createcommentFromUser']);
 Route::put('/comment/user/{id}', [CommentController::class, 'updateCommentFromUser']);
-Route::get('/comments/book_review/{id}', [CommentController::class, 'getAllCommentsForBookReviewID']);
+Route::get('/comments/post/{id}', [CommentController::class, 'getAllCommentsForBookReviewID']);
 Route::put('/comment/{comment}/update', [CommentController::class, 'updateComment']);
 Route::delete('/comment/{comment}/destroy', [CommentController::class, 'deleteComment']);
 
@@ -59,8 +59,8 @@ Route::middleware('auth:api')->post('/post', [PostController::class, 'createPost
 Route::get('/post/{post}', [PostController::class, 'getPost']);
 Route::middleware('auth:api')->put('/post/{post}/update', [PostController::class, 'updatePost']);
 Route::middleware('auth:api')->delete('/post/{post}/destroy', [PostController::class, 'deletePost']);
-Route::middleware('auth:api')->post('/post/{post}/approve', [PostController::class, 'approvePost']);
-Route::middleware('auth:api')->get('/post', [PostController::class, 'getPostsFromUser']);
+Route::middleware('auth:api')->put('/post/{post}/approve', [PostController::class, 'approvePost']);
+Route::middleware('auth:api')->get('/post/user', [PostController::class, 'getPostsFromUser']);
 
 Route::post('/sendEmail', [AuthController::class, 'sendMail']);
 
